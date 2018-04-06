@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/gorilla/handlers"
+  packages = ["."]
+  revision = "90663712d74cb411cbef281bc1e08c19d1a76145"
+  version = "v1.3.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/lib/pq"
   packages = [
@@ -10,9 +16,36 @@
   ]
   revision = "d34b9ff171c21ad295489235aec8b6626023cd04"
 
+[[projects]]
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
+  version = "v1.0.5"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/tonyhhyip/vodka"
+  packages = ["."]
+  revision = "eccff79957ae888fea11c501ce14abc550a05438"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "b2aa35443fbc700ab74c586ae79b81c171851023"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sys"
+  packages = [
+    "unix",
+    "windows"
+  ]
+  revision = "1d206c9fa8975fb4cf00df1dc8bf3283dc24ba0e"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "f9a9f07200aebaeb4840e863e9419104ba612b49f2f5e5a91dffde8b66fcaa8c"
+  inputs-digest = "d994b018e6e76412a290ab80dae899dd81047bce822efc0568b41a4eacd4f77b"
   solver-name = "gps-cdcl"
   solver-version = 1

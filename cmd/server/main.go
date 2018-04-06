@@ -5,6 +5,7 @@ import (
 	"os"
 	"sync"
 
+	"github.com/gorilla/handlers"
 	"github.com/tonyhhyip/seau/api"
 	"github.com/tonyhhyip/seau/pkg/server"
 	"github.com/tonyhhyip/seau/pkg/server/db"
@@ -27,7 +28,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	http.ListenAndServe(":"+port, handler)
+	http.ListenAndServe(":"+port, handlers.CombinedLoggingHandler(os.Stdout, handler))
 }
 func newOpener() api.Opener {
 	dbUrl := os.Getenv("DB_URL")
