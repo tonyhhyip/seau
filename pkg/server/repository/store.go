@@ -1,0 +1,33 @@
+package repository
+
+import (
+	"database/sql"
+
+	"github.com/tonyhhyip/seau/api"
+)
+
+type Store struct {
+	Opener api.Opener
+}
+
+func (s *Store) GetByDomain(domain string) (r *Repository, err error) {
+	conn, err := s.Opener.Open()
+	if err != nil {
+		return
+	}
+
+	defer conn.Close()
+
+	query := "SELECT domain, allow_public_read, handler FROM repositories WHERE domain = $1"
+	row := conn.QueryRow(query, domain)
+
+	var repo Repository
+	r = &repo
+	err = row.Scan(&repo.Domain, &repo.AllowPublicRead, &repo.Handler)
+
+	if err != nil && err == sql.ErrNoRows {
+		return nil, nil
+	}
+
+	return
+}
