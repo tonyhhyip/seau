@@ -5,11 +5,14 @@ import (
 	"errors"
 	"sync"
 	"time"
+
+	"github.com/tonyhhyip/seau/pkg/server/modules/config"
 )
 
 type Registry struct {
 	Loader        Loader
 	RegisterTable *sync.Map
+	ConfigFactory *config.PluginConfigFactory
 }
 
 func (r *Registry) Register(name string) (err error) {
@@ -29,6 +32,7 @@ func (r *Registry) Register(name string) (err error) {
 	if err != nil {
 		return
 	}
+	plugin.SetConfig(r.ConfigFactory.Create(plugin.ID()))
 
 	r.RegisterTable.Store(name, plugin)
 

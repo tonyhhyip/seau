@@ -5,17 +5,20 @@ import (
 	"os"
 	"sync"
 
+	"github.com/tonyhhyip/seau/api"
 	"github.com/tonyhhyip/seau/pkg/server"
 	"github.com/tonyhhyip/seau/pkg/server/db"
 	"github.com/tonyhhyip/seau/pkg/server/modules"
+	"github.com/tonyhhyip/seau/pkg/server/modules/config"
 	"github.com/tonyhhyip/seau/pkg/server/repository"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	store := newStore()
-	registry := newRegistry()
+	opener := newOpener()
+	store := newStore(opener)
+	registry := newRegistry(opener, store)
 	handler := &server.Handler{
 		Store:    store,
 		Registry: registry,
@@ -26,20 +29,22 @@ func main() {
 	}
 	http.ListenAndServe(":"+port, handler)
 }
-
-func newStore() *repository.Store {
+func newOpener() api.Opener {
 	dbUrl := os.Getenv("DB_URL")
 	if dbUrl == "" {
 		panic("DB_URL is not set")
 	}
-	opener := db.New("postgres", os.Getenv("DB_URL"))
+	return db.New("postgres", os.Getenv("DB_URL"))
+}
+
+func newStore(opener api.Opener) *repository.Store {
 	store := &repository.Store{
 		Opener: opener,
 	}
 	return store
 }
 
-func newRegistry() *modules.Registry {
+func newRegistry(opener api.Opener, store *repository.Store) *modules.Registry {
 	rootPath, _ := os.Getwd()
 	loader := &modules.NativePluginLoader{
 		RootPath: rootPath,
@@ -47,6 +52,16 @@ func newRegistry() *modules.Registry {
 	registry := &modules.Registry{
 		Loader:        loader,
 		RegisterTable: new(sync.Map),
+		ConfigFactory: newConfigFactory(opener, store),
 	}
 	return registry
+}
+
+func newConfigFactory(opener api.Opener, store *repository.Store) *config.PluginConfigFactory {
+	return &config.PluginConfigFactory{
+		Opener: opener,
+		DomainRegistryFactory: &config.DomainRegistryFactory{
+			Store: store,
+		},
+	}
 }
