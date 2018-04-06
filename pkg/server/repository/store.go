@@ -31,3 +31,16 @@ func (s *Store) GetByDomain(domain string) (r *Repository, err error) {
 
 	return
 }
+
+func (s *Store) Save(repo *Repository) (err error) {
+	conn, err := s.Opener.Open()
+	if err != nil {
+		return
+	}
+
+	defer conn.Close()
+
+	query := "INSERT INTO repositories (domain, allow_public_read, handler) VALUES ($1, $2, $3)"
+	_, err = conn.Exec(query, repo.Domain, repo.AllowPublicRead, repo.Handler)
+	return
+}
