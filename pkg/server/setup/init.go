@@ -1,8 +1,11 @@
 package setup
 
 import (
+	"sync"
+
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 	"github.com/tonyhhyip/seau/pkg/server/blob"
 	serverConfig "github.com/tonyhhyip/seau/pkg/server/config"
 	"github.com/tonyhhyip/seau/pkg/server/db"
@@ -10,7 +13,7 @@ import (
 
 var globalConfig *serverConfig.Config
 
-func init() {
+func Bootstrap() {
 	globalConfig = serverConfig.BuildFromEnv()
 	opener := db.NewFromConfig(globalConfig)
 	blobManager, err := blob.NewFromConfig(globalConfig)
@@ -24,7 +27,18 @@ func init() {
 }
 
 func initPlugin() {
+	logrus.Debug("Load Plugin")
+	group := new(sync.WaitGroup)
 	for _, name := range globalConfig.Plugin.Plugins {
-		registry.Register(name)
+		group.Add(1)
+		go func() {
+			logrus.Debugf("Plugin: %s", name)
+			if err := registry.Register(name); err != nil {
+				logrus.Error(err)
+				panic(err)
+			}
+			group.Done()
+		}()
 	}
+	group.Wait()
 }
