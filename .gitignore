@@ -3,3 +3,4 @@ vendor
 /plugins
 .env
 dist
+.DS_Store
