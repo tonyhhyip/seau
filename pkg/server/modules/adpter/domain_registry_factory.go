@@ -1,4 +1,4 @@
-package config
+package adpter
 
 import "github.com/tonyhhyip/seau/pkg/server/repository"
 

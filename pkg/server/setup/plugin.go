@@ -2,12 +2,17 @@ package setup
 
 import (
 	"github.com/tonyhhyip/seau/api"
-	"github.com/tonyhhyip/seau/pkg/server/modules/config"
+	"github.com/tonyhhyip/seau/pkg/server/modules/adpter"
 )
 
-func newConfigFactory(opener api.Opener, factory *config.DomainRegistryFactory) *config.PluginConfigFactory {
-	return &config.PluginConfigFactory{
+func newConfigFactory(
+	opener api.Opener,
+	domain *adpter.DomainRegistryFactory,
+	blob *adpter.BlobFactory,
+) *adpter.PluginConfigFactory {
+	return &adpter.PluginConfigFactory{
 		Opener:                opener,
-		DomainRegistryFactory: factory,
+		DomainRegistryFactory: domain,
+		BlobManagerFactory:    blob,
 	}
 }

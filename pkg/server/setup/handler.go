@@ -10,6 +10,8 @@ import (
 	"github.com/tonyhhyip/seau/pkg/server/repository"
 )
 
+var handler http.Handler
+
 func newHandler(store repository.Store, registry *modules.Registry) http.Handler {
 	handler := &server.Handler{
 		Store:    store,

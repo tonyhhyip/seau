@@ -6,13 +6,13 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tonyhhyip/seau/pkg/server/modules/config"
+	"github.com/tonyhhyip/seau/pkg/server/modules/adpter"
 )
 
 type Registry struct {
 	Loader        Loader
 	RegisterTable *sync.Map
-	ConfigFactory *config.PluginConfigFactory
+	ConfigFactory *adpter.PluginConfigFactory
 }
 
 func (r *Registry) Register(name string) (err error) {

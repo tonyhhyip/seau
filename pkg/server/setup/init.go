@@ -1,41 +1,30 @@
 package setup
 
 import (
-	"net/http"
-
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
-	"github.com/tonyhhyip/seau/api"
+	"github.com/tonyhhyip/seau/pkg/server/blob"
 	serverConfig "github.com/tonyhhyip/seau/pkg/server/config"
 	"github.com/tonyhhyip/seau/pkg/server/db"
-	"github.com/tonyhhyip/seau/pkg/server/modules"
-	pluginConfig "github.com/tonyhhyip/seau/pkg/server/modules/config"
-	"github.com/tonyhhyip/seau/pkg/server/repository"
 )
 
-var handler http.Handler
-var registry *modules.Registry
+var globalConfig *serverConfig.Config
 
 func init() {
-	config := serverConfig.BuildFromEnv()
-	opener := db.NewFromConfig(config)
-	store := newStore(opener)
-	initRegistry(config, store, opener)
-	handler = newHandler(store, registry)
-	initPlugin(config)
-}
-
-func initRegistry(config *serverConfig.Config, store repository.Store, opener api.Opener) {
-	factory := &pluginConfig.DomainRegistryFactory{
-		Store: store,
+	globalConfig = serverConfig.BuildFromEnv()
+	opener := db.NewFromConfig(globalConfig)
+	blobManager, err := blob.NewFromConfig(globalConfig)
+	if err != nil {
+		panic(err)
 	}
-	configFactory := newConfigFactory(opener, factory)
-	loader := modules.NewLoaderWithConfig(config)
-	registry = newRegistry(loader, configFactory)
+	store := newStore(opener)
+	initRegistry(store, opener, blobManager)
+	handler = newHandler(store, registry)
+	initPlugin()
 }
 
-func initPlugin(config *serverConfig.Config) {
-	for _, name := range config.Plugin.Plugins {
+func initPlugin() {
+	for _, name := range globalConfig.Plugin.Plugins {
 		registry.Register(name)
 	}
 }
