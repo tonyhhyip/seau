@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/sirupsen/logrus"
 	"github.com/tonyhhyip/seau/api"
 	"github.com/tonyhhyip/seau/pkg/server/modules"
 	"github.com/tonyhhyip/seau/pkg/server/repository"
@@ -14,6 +15,7 @@ type Handler struct {
 }
 
 func (h *Handler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+	logrus.Debugf("Fetch domain for %s", req.Host)
 	repo, err := h.Store.GetByDomain(req.Host)
 	if err != nil {
 		http.Error(resp, err.Error(), http.StatusInternalServerError)
@@ -37,6 +39,8 @@ func (h *Handler) doHandle(repo *repository.Repository, resp http.ResponseWriter
 	}
 
 	plugin := p.(api.Plugin)
+
+	logrus.Debugf("Handle by plugin %s", plugin.Name())
 
 	handler := plugin.Handler()
 	handler.ServeHTTP(resp, req)
