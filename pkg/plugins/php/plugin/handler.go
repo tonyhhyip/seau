@@ -56,6 +56,8 @@ func (p *processContainer) createRouter() vodka.Handler {
 	router.GET("/packages", p.listProviders)
 	router.GET("/p/:provider/:hash", p.listPackages)
 	router.GET("/pkg/:provider/:package", p.listVersion)
+	router.GET("/pkg/:provider/:package/:hash", p.listVersion)
+	router.GET("/b/:provider/:package/:version", p.getBlob)
 
 	return router.Handler()
 }
@@ -168,4 +170,52 @@ func (p *processContainer) listVersion(c *vodka.Context) {
 			provider + "/" + pkg: pkgs,
 		},
 	})
+}
+
+func (p *processContainer) getBlob(c *vodka.Context) {
+	var err error
+
+	provider, err := vodka.String(c.UserValue("provider"))
+	if err != nil {
+		c.Logger().Error(err.Error())
+		c.Error(err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	pkg, err := vodka.String(c.UserValue("package"))
+	if err != nil {
+		c.Logger().Error(err.Error())
+		c.Error(err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	version, err := vodka.String(c.UserValue("version"))
+	if err != nil {
+		c.Logger().Error(err.Error())
+		c.Error(err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	hostname := c.Host()
+
+	repo, exists, err := p.store.CheckExists(hostname, provider, pkg, version)
+	if err != nil {
+		c.Logger().Error(err.Error())
+		c.Error(err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if !exists {
+		c.Status(http.StatusNotFound)
+		return
+	}
+
+	location, err := p.blob.GetByUrl(repo, fmt.Sprintf("%s/%s/%s.tar", provider, pkg, version))
+	if err != nil {
+		c.Logger().Error(err.Error())
+		c.Error(err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	c.Redirect(location, http.StatusFound)
 }

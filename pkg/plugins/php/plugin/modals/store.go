@@ -1,6 +1,10 @@
 package modals
 
-import "github.com/tonyhhyip/seau/api"
+import (
+	"database/sql"
+
+	"github.com/tonyhhyip/seau/api"
+)
 
 type Store struct {
 	Opener api.Opener
@@ -110,4 +114,32 @@ func (s *Store) GetPackageVersion(domain, vendor, pkg string) (versions []*Packa
 	}
 
 	return
+}
+
+func (s *Store) CheckExists(domain, vendor, pkg, version string) (id string, exists bool, err error) {
+	conn, err := s.Opener.Open()
+	if err != nil {
+		return
+	}
+
+	defer conn.Close()
+
+	query := `
+			SELECT
+				php_repository.id
+			FROM php_package_version
+				INNER JOIN php_package ON php_package_version.package = php_package.id
+				INNER JOIN php_vendor ON php_vendor.id = php_package.vendor
+				INNER JOIN php_repository ON php_vendor.repository = php_repository.id
+			WHERE
+				php_repository.domain = $1 AND php_vendor.name = $2 AND php_package.name = $3 AND php_package_version.version = $4`
+
+	row := conn.QueryRow(query, domain, vendor, pkg, version)
+
+	if err := row.Scan(&id); err != nil && err != sql.ErrNoRows {
+		return "", false, err
+	} else {
+		return id, err != sql.ErrNoRows, nil
+	}
+
 }
