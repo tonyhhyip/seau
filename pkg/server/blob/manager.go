@@ -51,7 +51,7 @@ func (m *MinioManager) GetFileWithUrl(handler, repo, filename string) (presigned
 		return
 	}
 
-	presignedURL = u.RequestURI()
+	presignedURL = u.String()
 	return
 }
 
@@ -72,7 +72,7 @@ func (m *MinioManager) PutFile(handler, repo string, blob api.Blob) (err error) 
 func (m *MinioManager) PutFileWithUrl(handler, repo, filename string) (presignedUrl string, err error) {
 	objName := m.objectName(handler, repo, filename)
 	u, err := m.Client.PresignedPutObject(m.BucketName, objName, 5*time.Minute)
-	presignedUrl = u.RequestURI()
+	presignedUrl = u.String()
 	return
 }
 
