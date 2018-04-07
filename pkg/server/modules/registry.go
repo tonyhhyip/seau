@@ -6,6 +6,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"github.com/tonyhhyip/seau/pkg/server/modules/adpter"
 )
 
@@ -22,7 +23,7 @@ func (r *Registry) Register(name string) (err error) {
 	}
 
 	plugin, err := r.Loader.Load(name)
-	if err != nil {
+	if err != nil || plugin == nil {
 		return
 	}
 
@@ -32,9 +33,13 @@ func (r *Registry) Register(name string) (err error) {
 	if err != nil {
 		return
 	}
-	plugin.SetConfig(r.ConfigFactory.Create(plugin.ID()))
+
+	config := r.ConfigFactory.Create(plugin.ID())
+	plugin.SetConfig(config)
 
 	r.RegisterTable.Store(name, plugin)
+
+	logrus.Infof("Load plugin %s(%s)", plugin.Name(), plugin.ID())
 
 	return
 }
