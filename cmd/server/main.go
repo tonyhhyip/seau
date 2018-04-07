@@ -13,6 +13,7 @@ import (
 	"github.com/tonyhhyip/seau/pkg/server/modules/config"
 	"github.com/tonyhhyip/seau/pkg/server/repository"
 
+	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
 )
 
