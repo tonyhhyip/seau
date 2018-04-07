@@ -5,9 +5,8 @@ import (
 	"github.com/tonyhhyip/seau/pkg/server/repository"
 )
 
-func newStore(opener api.Opener) *repository.Store {
-	store := &repository.Store{
+func newStore(opener api.Opener) repository.Store {
+	return &repository.PostgresStore{
 		Opener: opener,
 	}
-	return store
 }

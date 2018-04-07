@@ -3,7 +3,7 @@ package config
 import "github.com/tonyhhyip/seau/pkg/server/repository"
 
 type DomainRegistryFactory struct {
-	Store *repository.Store
+	Store repository.Store
 }
 
 func (drf *DomainRegistryFactory) Create(name string) *domainRegistry {

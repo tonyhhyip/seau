@@ -5,7 +5,18 @@ import (
 	"plugin"
 
 	"github.com/tonyhhyip/seau/api"
+	"github.com/tonyhhyip/seau/pkg/server/config"
 )
+
+func NewLoaderWithConfig(config *config.Config) *NativePluginLoader {
+	return NewLoader(config.Plugin.RootPath)
+}
+
+func NewLoader(rootPath string) *NativePluginLoader {
+	return &NativePluginLoader{
+		RootPath: rootPath,
+	}
+}
 
 type NativePluginLoader struct {
 	RootPath string

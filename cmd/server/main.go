@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
-	"github.com/tonyhhyip/seau/cmd/server/setup"
+	"github.com/tonyhhyip/seau/pkg/server/setup"
 )
 
 func main() {

@@ -9,7 +9,7 @@ import (
 )
 
 type Handler struct {
-	Store    *repository.Store
+	Store    repository.Store
 	Registry *modules.Registry
 }
 

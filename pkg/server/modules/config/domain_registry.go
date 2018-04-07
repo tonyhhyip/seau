@@ -4,7 +4,7 @@ import "github.com/tonyhhyip/seau/pkg/server/repository"
 
 type domainRegistry struct {
 	name  string
-	store *repository.Store
+	store repository.Store
 }
 
 func (dr *domainRegistry) Occupy(domain string) error {

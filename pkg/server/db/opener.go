@@ -1,6 +1,14 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+
+	"github.com/tonyhhyip/seau/pkg/server/config"
+)
+
+func NewFromConfig(config *config.Config) *opener {
+	return New(config.Database.Driver, config.Database.DataSource)
+}
 
 func New(driver, dataSource string) *opener {
 	return &opener{

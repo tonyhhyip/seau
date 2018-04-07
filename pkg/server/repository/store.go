@@ -6,11 +6,11 @@ import (
 	"github.com/tonyhhyip/seau/api"
 )
 
-type Store struct {
+type PostgresStore struct {
 	Opener api.Opener
 }
 
-func (s *Store) GetByDomain(domain string) (r *Repository, err error) {
+func (s *PostgresStore) GetByDomain(domain string) (r *Repository, err error) {
 	conn, err := s.Opener.Open()
 	if err != nil {
 		return
@@ -32,7 +32,7 @@ func (s *Store) GetByDomain(domain string) (r *Repository, err error) {
 	return
 }
 
-func (s *Store) Save(repo *Repository) (err error) {
+func (s *PostgresStore) Save(repo *Repository) (err error) {
 	conn, err := s.Opener.Open()
 	if err != nil {
 		return
@@ -45,7 +45,7 @@ func (s *Store) Save(repo *Repository) (err error) {
 	return
 }
 
-func (s *Store) Delete(handler, domain string) (err error) {
+func (s *PostgresStore) Delete(handler, domain string) (err error) {
 	conn, err := s.Opener.Open()
 	if err != nil {
 		return
