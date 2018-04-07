@@ -2,6 +2,12 @@
 
 
 [[projects]]
+  name = "github.com/blang/semver"
+  packages = ["."]
+  revision = "2ee87856327ba09384cabd113bc6b5d174e9ec0f"
+  version = "v3.5.1"
+
+[[projects]]
   branch = "master"
   name = "github.com/dustin/go-humanize"
   packages = ["."]
@@ -121,6 +127,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7413858f335a13d31f9da31c48723e950771c6bcc94a99878e993609dbfb904e"
+  inputs-digest = "b17ddc72f5c358363ced1e44772ee8c9cbbe8e32e870522ccf96cc4f1a1e09d7"
   solver-name = "gps-cdcl"
   solver-version = 1

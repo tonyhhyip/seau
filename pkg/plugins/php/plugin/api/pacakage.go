@@ -11,7 +11,7 @@ const (
 )
 
 type Packages struct {
-	Packages map[string]Package
+	Packages map[string]Package `json:"packages"`
 }
 
 type Package map[string]PackageVersion
@@ -67,7 +67,7 @@ type AutoLoad struct {
 	Psr4                map[string]string `json:"psr-4,omitempty"`
 	ClassMap            []string          `json:"classmap,omitempty"`
 	Files               []string          `json:"files,omitempty"`
-	ExcludeFromClassMap []string          `json:"exclude-from-classmap"`
+	ExcludeFromClassMap []string          `json:"exclude-from-classmap,omitempty"`
 }
 
 type PackageSource struct {
