@@ -67,7 +67,7 @@
   branch = "master"
   name = "github.com/tonyhhyip/vodka"
   packages = ["."]
-  revision = "eccff79957ae888fea11c501ce14abc550a05438"
+  revision = "3bd32229a24c67e9d21f6ac74dc9ed0269967774"
 
 [[projects]]
   branch = "master"
@@ -95,7 +95,7 @@
     "unix",
     "windows"
   ]
-  revision = "1d206c9fa8975fb4cf00df1dc8bf3283dc24ba0e"
+  revision = "3b87a42e500a6dc65dae1a55d0b641295971163e"
 
 [[projects]]
   name = "golang.org/x/text"
