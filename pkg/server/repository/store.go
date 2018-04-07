@@ -44,3 +44,16 @@ func (s *Store) Save(repo *Repository) (err error) {
 	_, err = conn.Exec(query, repo.Domain, repo.AllowPublicRead, repo.Handler)
 	return
 }
+
+func (s *Store) Delete(handler, domain string) (err error) {
+	conn, err := s.Opener.Open()
+	if err != nil {
+		return
+	}
+
+	defer conn.Close()
+
+	query := "DELETE FROM repositories WHERE domain = $1 AND handler = $2"
+	_, err = conn.Exec(query, domain, handler)
+	return
+}

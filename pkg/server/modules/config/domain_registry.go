@@ -26,3 +26,7 @@ func (dr *domainRegistry) PrivateOccupy(domain string) error {
 
 	return dr.store.Save(repo)
 }
+
+func (dr *domainRegistry) Release(domain string) error {
+	return dr.store.Delete(dr.name, domain)
+}
