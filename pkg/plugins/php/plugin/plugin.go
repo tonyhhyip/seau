@@ -21,13 +21,13 @@ func (p *Plugin) Name() string {
 }
 
 func (p *Plugin) Init(context.Context) error {
+	p.processor = new(processContainer)
 	p.handler = p.processor.createHandler()
 	return nil
 }
 
 func (p *Plugin) SetConfig(config api.Config) {
-	p.processor.opener = config.Opener()
-	p.processor.registry = config.DomainRegistry()
+	p.processor.init(config)
 }
 
 func (p *Plugin) Handler() http.Handler {
