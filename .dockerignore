@@ -1,0 +1,7 @@
+.idea
+vendor
+/plugins
+.env
+dist
+.git
+.gitignore
