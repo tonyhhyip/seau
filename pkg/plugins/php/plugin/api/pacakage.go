@@ -40,6 +40,7 @@ type PackageVersion struct {
 	AutoloadDev       AutoLoad      `json:"autoload-dev,omitempty"`
 	MinimumStability  Stability     `json:"minimum-stability,omitempty"`
 	PreferStable      bool          `json:"prefer-stable,omitempty"`
+	Extra             Extra         `json:"extra,omitempty"`
 }
 
 type Author struct {
@@ -75,4 +76,8 @@ type PackageSource struct {
 	Url       string `json:"url"`
 	Reference string `json:"reference"`
 	ShaSum    string `json:"shasum"`
+}
+
+type Extra struct {
+	Class string `json:"class"`
 }
