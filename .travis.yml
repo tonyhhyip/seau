@@ -1,0 +1,14 @@
+language: go
+go:
+  - '1.10'
+  - '1.10.1'
+
+go_import_path: github.com/tonyhhyip/seau
+
+before_install: go get github.com/golang/dep/cmd/dep
+
+install: dep ensure
+
+script:
+  - go vet ./...
+  - go test ./...
