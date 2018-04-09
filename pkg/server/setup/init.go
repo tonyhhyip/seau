@@ -29,16 +29,17 @@ func Bootstrap() {
 func initPlugin() {
 	logrus.Debug("Load Plugin")
 	group := new(sync.WaitGroup)
-	for _, name := range globalConfig.Plugin.Plugins {
+	loadPlugin := func(name string) {
 		group.Add(1)
-		go func() {
-			logrus.Debugf("Plugin: %s", name)
-			if err := registry.Register(name); err != nil {
-				logrus.Error(err)
-				panic(err)
-			}
-			group.Done()
-		}()
+		logrus.Debugf("Plugin: %s", name)
+		if err := registry.Register(name); err != nil {
+			logrus.Error(err)
+			panic(err)
+		}
+		group.Done()
+	}
+	for _, name := range globalConfig.Plugin.Plugins {
+		go loadPlugin(name)
 	}
 	group.Wait()
 }
