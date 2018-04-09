@@ -9,6 +9,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/dgrijalva/lfu-go"
+  packages = ["."]
+  revision = "f174e76c51386cff92107da6dd55ec07e270ff70"
+
+[[projects]]
+  branch = "master"
   name = "github.com/dustin/go-humanize"
   packages = ["."]
   revision = "bb3d318650d48840a39aa21a027c6630e198e626"
@@ -127,6 +133,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b17ddc72f5c358363ced1e44772ee8c9cbbe8e32e870522ccf96cc4f1a1e09d7"
+  inputs-digest = "992b3d5250622573e5ddf99d07718f757a7a4a50faeb9a7f6418e0533d2ed67f"
   solver-name = "gps-cdcl"
   solver-version = 1
